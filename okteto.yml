@@ -1,0 +1,10 @@
+name: sample-spring-boot-on-kubernetes
+image: okteto/maven
+command: ["mvn", "spring-boot:run" ]
+workdir: /app
+environment:
+- MONGO_USERNAME=okteto
+- MONGO_DATABASE=okteto
+- MONGO_PASSWORD=okteto
+forward:
+- 8080:8080
