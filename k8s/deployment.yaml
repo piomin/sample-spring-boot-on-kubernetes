@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mongodb
+data:
+  database-name: test
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mongodb
+type: Opaque
+data:
+  database-password: dGVzdDEyMw==
+  database-user: dGVzdA==
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-spring-boot-on-kubernetes-deployment
+spec:
+  selector:
+    matchLabels:
+      app: sample-spring-boot-on-kubernetes
+  template:
+    metadata:
+      labels:
+        app: sample-spring-boot-on-kubernetes
+    spec:
+      containers:
+      - name: sample-spring-boot-on-kubernetes
+        image: piomin/sample-spring-boot-on-kubernetes
+        ports:
+        - containerPort: 8080
+        env:
+          - name: MONGO_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: mongodb
+                key: database-name
+          - name: MONGO_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongodb
+                key: database-user
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongodb
+                key: database-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-spring-boot-on-kubernetes-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: sample-spring-boot-on-kubernetes
+  ports:
+  - port: 8080
+    targetPort: 9000

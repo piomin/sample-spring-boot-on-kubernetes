@@ -1,0 +1,10 @@
+apiVersion: skaffold/v2alpha1
+kind: Config
+build:
+  artifacts:
+    - image: piomin/sample-spring-boot-on-kubernetes
+      jib:
+        args:
+          - -Pjib
+  tagPolicy:
+    gitCommit: {}
