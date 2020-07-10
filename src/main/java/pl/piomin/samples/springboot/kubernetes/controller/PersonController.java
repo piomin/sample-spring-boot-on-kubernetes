@@ -35,7 +35,7 @@ public class PersonController {
 		return repository.save(person);
 	}
 
-	@PostMapping("/generate")
+	@PostMapping("/random")
 	public Set<Person> add() {
 		Person p1 = new Person();
 		p1.setAge(1);
