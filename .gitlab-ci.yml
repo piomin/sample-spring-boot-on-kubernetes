@@ -1,0 +1,36 @@
+image: maven:latest
+
+stages:
+  - build
+  - test
+  - image-build
+  - deploy
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+build:
+  stage: build
+  script:
+    - mvn compile
+
+test:
+  stage: test
+  script:
+    - mvn test
+
+image-build:
+  stage: image-build
+  script:
+    - cd employee-service
+    - mvn -P jib compile jib:dockerBuild
+
+deploy:
+  image: bitnami/kubectl:latest
+  stage: deploy
+  only:
+    - master
+  script:
+    - kubectl apply -f k8s/deployment.yaml
