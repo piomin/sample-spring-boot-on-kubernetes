@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: sample-spring-boot-on-kubernetes
+  data:
+    mongodb:
+      uri: mongodb://localhost:27071/test
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS
