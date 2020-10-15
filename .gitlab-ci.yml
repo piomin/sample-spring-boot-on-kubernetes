@@ -4,12 +4,6 @@ variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
-stages:
-  - build
-  - test
-  - image-build
-  - deploy
-
 cache:
   paths:
     - .m2/repository/
@@ -18,7 +12,7 @@ cache:
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS compile
+    - mvn -s .m2/settings.xml --batch-mode compile
 
 test:
   stage: test
@@ -28,7 +22,7 @@ test:
 image-build:
   stage: image-build
   script:
-    - mvn $MAVEN_CLI_OPTS -P jib compile jib:build
+    - mvn -s .m2/settings.xml --batch-mode -P jib compile jib:build
 
 deploy:
   image: bitnami/kubectl:latest
