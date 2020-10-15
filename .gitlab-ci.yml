@@ -24,7 +24,6 @@ test:
 image-build:
   stage: image-build
   script:
-    - cd employee-service
     - mvn -P jib compile jib:dockerBuild
 
 deploy:
