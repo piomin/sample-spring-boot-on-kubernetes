@@ -1,5 +1,9 @@
 image: maven:latest
 
+variables:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
 stages:
   - build
   - test
@@ -14,17 +18,17 @@ cache:
 build:
   stage: build
   script:
-    - mvn compile
+    - mvn $MAVEN_CLI_OPTS compile
 
 test:
   stage: test
   script:
-    - mvn test
+    - mvn $MAVEN_CLI_OPTS test
 
 image-build:
   stage: image-build
   script:
-    - mvn -P jib compile jib:dockerBuild
+    - mvn $MAVEN_CLI_OPTS -P jib compile jib:build
 
 deploy:
   image: bitnami/kubectl:latest
