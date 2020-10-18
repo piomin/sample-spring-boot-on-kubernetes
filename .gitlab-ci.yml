@@ -4,36 +4,37 @@ stages:
   - build
   - test
   - image-build
-  - deploy
-
-variables:
-  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-
-cache:
-  paths:
-    - .m2/repository/
-    - target/
+  - deploy-tb
+  - deploy-prod
 
 build:
   stage: build
   script:
-    - mvn -s .m2/settings.xml --batch-mode compile
+    - mvn compile
 
 test:
   stage: test
   script:
-    - mvn $MAVEN_CLI_OPTS test
+    - mvn test
 
 image-build:
   stage: image-build
   script:
-    - mvn -s .m2/settings.xml --batch-mode -P jib compile jib:build
+    - mvn -s .m2/settings.xml -P jib compile jib:build
 
-deploy:
+deploy-tb:
   image: bitnami/kubectl:latest
   stage: deploy
   only:
     - master
   script:
-    - kubectl apply -f k8s/deployment.yaml
+    - kubectl apply -f k8s/deployment.yaml -n test
+
+deploy-prod:
+  image: bitnami/kubectl:latest
+  stage: deploy
+  only:
+    - master
+  when: manual
+  script:
+    - kubectl apply -f k8s/deployment.yaml -n prod
