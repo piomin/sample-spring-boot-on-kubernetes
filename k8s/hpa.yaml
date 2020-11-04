@@ -1,0 +1,20 @@
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: sample-spring-boot-on-kubernetes-deployment-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sample-spring-boot-on-kubernetes-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: http_server_requests_seconds_count_ok
+        target:
+          type: AverageValue
+          averageValue: 150

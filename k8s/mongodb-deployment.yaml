@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: mongodb
 data:
-  database-name: mongodb
+  database-name: admin
 ---
 apiVersion: v1
 kind: Secret

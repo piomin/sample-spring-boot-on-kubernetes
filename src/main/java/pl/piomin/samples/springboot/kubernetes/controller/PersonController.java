@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonController {
 
 	private PersonRepository repository;
-	@Autowired
 	private PersonService service;
 
-	PersonController(PersonRepository repository) {
+	PersonController(PersonRepository repository, PersonService service) {
 		this.repository = repository;
+		this.service = service;
 	}
 
 	@PostMapping

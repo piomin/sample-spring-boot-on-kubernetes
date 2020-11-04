@@ -8,6 +8,10 @@ spec:
       app: sample-spring-boot-on-kubernetes
   template:
     metadata:
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
       labels:
         app: sample-spring-boot-on-kubernetes
     spec:
