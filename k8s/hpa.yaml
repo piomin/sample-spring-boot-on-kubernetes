@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: sample-spring-boot-on-kubernetes-deployment-hpa
+  name: sample-hpa
   namespace: default
 spec:
   scaleTargetRef:
@@ -14,7 +14,7 @@ spec:
     - type: Pods
       pods:
         metric:
-          name: http_server_requests_seconds_count_ok
+          name: http_server_requests_seconds_count_sum
         target:
           type: AverageValue
-          averageValue: 150
+          averageValue: 100
