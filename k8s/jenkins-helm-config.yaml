@@ -1,0 +1,70 @@
+agent:
+  podName: default
+  customJenkinsLabels: default
+  volumes:
+    - type: PVC
+      claimName: jenkins-agent
+      mountPath: /home/jenkins
+      readOnly: false
+
+additionalAgents:
+  maven:
+    podName: maven
+    customJenkinsLabels: maven
+    image: jenkins/jnlp-agent-maven
+    tag: jdk11
+    volumes:
+      - type: PVC
+        claimName: jenkins-agent
+        mountPath: /home/jenkins
+        readOnly: false
+    resources:
+      limits:
+        cpu: "1"
+        memory: "2048Mi"
+
+master:
+  JCasC:
+    configScripts:
+      creds: |
+        credentials:
+          system:
+            domainCredentials:
+              - domain:
+                  name: "github.com"
+                  description: "GitHub domain"
+                  specifications:
+                    - hostnameSpecification:
+                        includes: "github.com"
+                credentials:
+                  - usernamePassword:
+                      scope: GLOBAL
+                      id: github_credentials
+                      username: piomin
+                      password: Piot_123
+              - credentials:
+                  - kubeconfig:
+                      id: "docker-desktop"
+                      kubeconfigSource:
+                        directEntry:
+                          content: |-
+                            apiVersion: v1
+                            kind: Config
+                            preferences: {}
+                            clusters:
+                            - cluster:
+                                certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUM1ekNDQWMrZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJd01URXdPVEE1TkRjd04xb1hEVE13TVRFd056QTVORGN3TjFvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTStrCnhKd3l6UVEydXNvRHh5RmwxREdwZWZQTVA0RGFVaVJsK01SQ1p1S0NFWUFkL0ZQOWtFS0RlVXMydmVURi9jMXYKUjZpTDlsMVMvdmN6REoyRXRuZUd0TXVPdWFXNnFCWkN5OFJ2NmFReHd0UEpnWVZGTHBNM2dXYmhqTHp3RXplOApEQlhxekZDZkNobXl3SkdORVdWV0s4VnBuSlpMbjRVbUZKcE5RQndsSXZwRC90UDJVUVRiRGNHYURqUE5vY2c0Cms1SmNOc3h3SDV0NkhIN0JZMW9jTEFLUUhsZ2V4V2ZObWdRRkM2UUcrRVNsWkpDVEtNdVVuM2JsRWVlYytmUWYKaVk3YmdOb3BjRThrS0lUY2pzMG95dGVyNmxuY2ZLTVBqSnc2RTNXMmpXRThKU2Z2WDE2dGVhZUZISDEyTmRqWgpWTER2ZWc3eVBsTlRmRVJld25FQ0F3RUFBYU5DTUVBd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZMWjUzVEhBSXp0bHljV0NrS1hhY2l4K0Y5a1FNQTBHQ1NxR1NJYjMKRFFFQkN3VUFBNElCQVFBZWllMTRoSlZkTHF3bUY0SGVPS0ZhNXVUYUt6aXRUSElJNHJhU3cxTUppZElQTmZERwprRk5KeXM1M2I4MHMveWFXQ3BPbXdCK1dEak9hWmREQjFxcXVxU1FxeGhkNWMxU2FBZ1VXTGp5OXdLa1dPMzBTCjB3RTRlVkY3Q1c5VGpSMEoyVXV6UEVXdFBKRWF4U2xKMGhuZlQyeFYvb0N5OE9kMm9EZjZkSFRvbE5UTUEyalcKZjRZdXl3U1Z5a2RNaXZYMU5xZzdmK3RrcEVwb25PdkQ4ZmFEL2dXZmpaWHNFdHo4NXRNcTVLd2NQNUh2ZDJ0ZgoyKzBSbEtFT0pyY1dyL1lEc2w3dWdDdkFJTVk4WGdJL1E5dTZZTjAzTngzWXdSS2UrMElpSzcyOHVuNVJaVEVXCmNZNHc0YkpudlN6WWpKeUJIaHNiQVNTNzN6NndXVEo4REhKSwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+                                server: https://kubernetes.default
+                              name: docker-desktop
+                            contexts:
+                            - context:
+                                cluster: docker-desktop
+                                user: docker-desktop
+                              name: docker-desktop
+                            current-context: docker-desktop
+                            users:
+                            - name: docker-desktop
+                              user:
+                                client-certificate-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURGVENDQWYyZ0F3SUJBZ0lJRnh2QzMyK2tPMEl3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TURFeE1Ea3dPVFEzTURkYUZ3MHlNVEV4TURrd09UUTNNekZhTURZeApGekFWQmdOVkJBb1REbk41YzNSbGJUcHRZWE4wWlhKek1Sc3dHUVlEVlFRREV4SmtiMk5yWlhJdFptOXlMV1JsCmMydDBiM0F3Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRQ3M0TXdUU3ByMkRoOTMKTlpERldsNWQyaWgwbllBdTJmTk1RYjZ2ZHR5RUVpTUVpNk5BM05qRGM4OWl5WUhOU2J4YmVNNlNUMzRlTFIwaQpXbHJJSlhhVjNBSXhnbFo4SkdqczVUSHRlM1FjNXZVSkJJWXhndFJFTFlJMGlJekpZdEhoU1NwMFU0eWNjdzl5CnVGSm1YTHVBRVdXR0tTcitVd2Y3RWtuWmJoaFRNQWI0RUF1NlR6dkpyRHhpTDAzU0UrSWhJMTJDV1Y3cVRqZ1gKdGI1OXdKcWkwK3ZJSDBSc3dxOUpnemtQTUhLNkFBZkgxbmFmZ3VCQjM2VEppcUR6YWFxV2VZTmludlIrSkVHMAptakV3NWlFN3JHdUgrZVBxSklvdTJlc1YvN1hyYWx2UEl2Zng2ajFvRWI4NWtna2RuV0JiQlNmTmJCdnhHQU1uCmdnLzdzNHdoQWdNQkFBR2pTREJHTUE0R0ExVWREd0VCL3dRRUF3SUZvREFUQmdOVkhTVUVEREFLQmdnckJnRUYKQlFjREFqQWZCZ05WSFNNRUdEQVdnQlMyZWQweHdDTTdaY25GZ3BDbDJuSXNmaGZaRURBTkJna3Foa2lHOXcwQgpBUXNGQUFPQ0FRRUFpbUg1c1JqcjB6WjlDRkU2SVVwNVRwV2pBUXhma29oQkpPOUZmRGE3N2kvR1NsYm1jcXFrCldiWUVYRkl3MU9EbFVjUy9QMXZ5d3ZwV0Y0VXNXTGhtYkF5ZkZGbXZRWFNEZHhYbTlkamI2OEVtRWFPSlI1VTYKOHJOTkR0TUVEY25sbFd2Qk1CRXBNbkNtcm9KcXo3ZzVzeDFQSmhwcDBUdUZDQTIwT2FXb3drTUNNUXRIZlhLQgpVUDA2eGxRU2o1SGNOS1BSQWFyQzBtSzZPVUhybExBcUIvOCtDQlowVUY2MXhTTGN1WFJvYU52S1ZDWHZnQy9kCkQ4ckxuWXFmbWl6WHMvcHJ3dEhsaVFBR2lmemU1MmttbTkyR2RrS2V1SmFRbmM5RWwrd2RZaUVBSHVKU1YvK04Kc2VRelpTa0ZmT2ozbHUxdWtoSDg4dGcxUUp2TkpuM1FhQT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+                                client-key-data: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcFFJQkFBS0NBUUVBck9ETUUwcWE5ZzRmZHpXUXhWcGVYZG9vZEoyQUx0bnpURUcrcjNiY2hCSWpCSXVqClFOell3M1BQWXNtQnpVbThXM2pPa2s5K0hpMGRJbHBheUNWMmxkd0NNWUpXZkNSbzdPVXg3WHQwSE9iMUNRU0cKTVlMVVJDMkNOSWlNeVdMUjRVa3FkRk9NbkhNUGNyaFNabHk3Z0JGbGhpa3EvbE1IK3hKSjJXNFlVekFHK0JBTAp1azg3eWF3OFlpOU4waFBpSVNOZGdsbGU2azQ0RjdXK2ZjQ2FvdFByeUI5RWJNS3ZTWU01RHpCeXVnQUh4OVoyCm40TGdRZCtreVlxZzgybXFsbm1EWXA3MGZpUkJ0Sm94TU9ZaE82eHJoL25qNmlTS0x0bnJGZisxNjJwYnp5TDMKOGVvOWFCRy9PWklKSFoxZ1d3VW56V3diOFJnREo0SVArN09NSVFJREFRQUJBb0lCQVFDWEZZTGtYVEFlVit0aAo2RnRVVG96b0lxOTJjdXRDaHRHZFZGdk14dWtqTnlLSloydk9WUFBQcE5lYXN4YVFqWjlpcGFxS3JaUS8xUmVBCkhVejNXOTVPUzg5UzYyQ2Y3OFlQT3FLdXRGU2VxYTErS3drSUhobGFXQmRSeUFDYVE1VysrSTEweWt1NXNzak8KYm8zOHpaQkQ5WEF2bHF6dlJTdFZYZjlTV1doQzBlWnRKTm84QU4yZnpkdkRjUUgwOVRsejh1S05EaUNra2RYQQpHTTdZTUdoQktYWGd6YlcxSUVMejRlRUpDZDh0dklReitwcWtxRktIcHRjNnVJY1hLQjFxUGVGRDRSMm9iNUlNCnl5MUpBWlZyR0JHaUk5d1p5OFU1a253UW93emwwUTEwZXlRdUkwTG42SWthZG5SQktMRHcrczRGaE1UQVViOWYKT1NBR3JaVnRBb0dCQU9RTDJzSEN3T25KOW0xYmRiSlVLeTFsRHRsTmV4aDRKOGNERVZKR3NyRVNndlgrSi9ZZQpXb0NHZXc3cGNXakFWaWJhOUMzSFBSbEtOV2hXOExOVlpvUy9jQUxCa1lpSUZNdDlnT1NpZmtCOFhmeVJQT3hJCmNIc2ZjOXZ2OEFJcmxZVVpCNjI1ak8rUFZTOXZLOXZXUGtka3d0MlFSUHlqYlEwVS9mZmdvUWVIQW9HQkFNSVIKd0lqL3RVbmJTeTZzL1JXSlFiVmxPb1VPVjFpb0d4WmNOQjBkaktBV3YwUksvVHdldFBRSXh2dmd1d2RaVFdiTApSTGk5M3RPY3U0UXhNOFpkdGZhTnh5dWQvM2xXSHhPYzRZa0EwUHdSTzY4MjNMcElWNGxrc0tuNUN0aC80QTFJCmw3czV0bHVEbkI3dFdYTFM4MHcyYkE4YWtVZXlBbkZmWXpTTUR1a1hBb0dBSkRFaGNialg1d0t2Z21HT2gxUEcKV25qOFowNWRwOStCNkpxN0NBVENYVW5qME9pYUxQeGFQcVdaS0IreWFQNkZiYnM0SDMvTVdaUW1iNzNFaTZHVgpHS0pOUTVLMjV5VTVyNlhtYStMQ0NMZjBMcDVhUGVHdFFFMFlsU0k2UkEzb3Qrdm1CUk02bzlacW5aR1dNMWlJCkg4cUZCcWJiM0FDUDBSQ3cwY01ycTBjQ2dZRUFvMWM5cmhGTERMYStPTEx3OE1kdHZyZE00ZUNJTTk2SnJmQTkKREtScVQvUFZXQzJscG94UjBYUHh4dDRIak0vbERiZllSNFhIbm1RMGo3YTUxU1BhbTRJSk9QVHFxYjJLdW44NApkSTl6VmpWSy90WTJRYlBSdVpvOTkxSGRod3RhRU5RZ29UeVo5N3gyRXJIQ3I1cE5uTC9SZzRUZzhtOHBEek14CjFIQnR2RkVDZ1lFQTF5aHNPUDBRb3F2SHRNOUFuWVlua2JzQU12L2dqT3FrWUk5cjQ2c1V3Mnc3WHRJb1NTYlAKU0hmbGRxN0IxVXJoTmRJMFBXWXRWZ3kyV1NrN0FaeG8vUWtLZGtPbTAxS0pCY2xteW9JZDE0a0xCVkZxbUV6Rgp1c2l4MmpwdTVOTWhjUWo4aFY2Sk42aXdraHJkYjByZVpuMGo4MG1ZRE96d3hjMmpvTmxSWjN3PQotLS0tLUVORCBSU0EgUFJJVkFURSBLRVktLS0tLQo=
+                      scope: GLOBAL

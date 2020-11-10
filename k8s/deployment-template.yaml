@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-spring-boot-on-kubernetes-deployment
+  namespace: ${PIPELINE_NAMESPACE}
+spec:
+  selector:
+    matchLabels:
+      app: sample-spring-boot-on-kubernetes
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /actuator/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+      labels:
+        app: sample-spring-boot-on-kubernetes
+    spec:
+      containers:
+      - name: sample-spring-boot-on-kubernetes
+        image: piomin/sample-spring-boot-on-kubernetes
+        ports:
+        - containerPort: 8080
+        env:
+          - name: MONGO_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: mongodb
+                key: database-name
+          - name: MONGO_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongodb
+                key: database-user
+          - name: MONGO_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongodb
+                key: database-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-spring-boot-on-kubernetes-service
+  namespace: ${PIPELINE_NAMESPACE}
+spec:
+  type: NodePort
+  selector:
+    app: sample-spring-boot-on-kubernetes
+  ports:
+  - port: 8080
