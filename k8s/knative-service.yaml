@@ -2,7 +2,8 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   annotations:
-    autoscaling.knative.dev/target: '20'
+    autoscaling.knative.dev/target: "20"
+    autoscaling.knative.dev/metric: "rps"
   name: sample-spring-boot-on-kubernetes
 spec:
   template:
