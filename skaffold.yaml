@@ -15,3 +15,10 @@ deploy:
     manifests:
       - k8s/mongodb-deployment.yaml
       - k8s/deployment.yaml
+profiles:
+  - name: knative
+    deploy:
+      kubectl:
+        manifests:
+          - k8s/mongodb-deployment.yaml
+          - k8s/knative-service.yaml
