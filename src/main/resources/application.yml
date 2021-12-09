@@ -3,7 +3,12 @@ spring:
     name: sample-spring-boot-on-kubernetes
   data:
     mongodb:
-      uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb/${MONGO_DATABASE}
+      host: mongodb
+      port: 27017
+      username: ${MONGO_USERNAME}
+      password: ${MONGO_PASSWORD}
+      database: ${MONGO_DATABASE}
+      authentication-database: admin
 
 logging:
   pattern:
@@ -19,5 +24,10 @@ management:
       group:
         readiness:
           include: mongo
+          additional-path: server:/readiness
       probes:
         enabled: true
+  server:
+    port: 8081
+
+#management.endpoint.health.group.live.additional-path="server:/healthz"
