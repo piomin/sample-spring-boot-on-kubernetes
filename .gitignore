@@ -1,2 +1,4 @@
 # Project exclude paths
 /target/
+.odo/env
+.odo/odo-file-index.json

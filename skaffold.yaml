@@ -1,24 +1,20 @@
-apiVersion: skaffold/v2beta5
+apiVersion: skaffold/v2beta22
 kind: Config
 metadata:
   name: sample-spring-boot-on-kubernetes
 build:
   artifacts:
-    - image: piomin/sample-spring-boot-on-kubernetes
-      jib:
-        args:
-          - -Pjib
-  tagPolicy:
-    gitCommit: {}
+  - image: piomin/sample-spring-boot-on-kubernetes
+    jib:
+      args:
+      - -Pjib
 deploy:
   kubectl:
     manifests:
-      - k8s/mongodb-deployment.yaml
-      - k8s/deployment.yaml
+    - k8s/deployment.yaml
 profiles:
-  - name: knative
-    deploy:
-      kubectl:
-        manifests:
-          - k8s/mongodb-deployment.yaml
-          - k8s/knative-service.yaml
+- name: knative
+  deploy:
+    kubectl:
+      manifests:
+      - k8s/knative-service.yaml

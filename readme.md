@@ -5,3 +5,8 @@ In this project I'm demonstrating different mechanisms of deploying application 
 ## Getting Started 
 Currently you may find here some examples of different techniques of deploying this application on Kubernetes. All the examples are described in a separated articles on my blog. Here's a full list of available examples:
 1. Using [Okteto Cloud Platform](https://okteto.com/) - Kubernetes for Developers. A detailed guide may be find in the following article: [Development on Kubernetes with Okteto and Spring Boot](https://piotrminkowski.com/2020/06/15/development-on-kubernetes-with-okteto-and-spring-boot/)
+
+Mongo for OpenShift:
+```shell
+$ oc new-app https://raw.githubusercontent.com/openshift/origin/master/examples/db-templates/mongodb-ephemeral-template.json 
+```
