@@ -3,7 +3,7 @@ spring:
     name: sample-spring-boot-on-kubernetes
   data:
     mongodb:
-      host: mongodb
+      host: ${MONGO_URL}
       port: 27017
       username: ${MONGO_USERNAME}
       password: ${MONGO_PASSWORD}

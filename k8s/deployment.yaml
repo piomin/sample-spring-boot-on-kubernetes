@@ -36,6 +36,8 @@ spec:
               secretKeyRef:
                 name: mongodb
                 key: database-password
+          - name: MONGO_URL
+            value: mongodb
         readinessProbe:
           httpGet:
             port: 8080
