@@ -5,6 +5,7 @@ import java.util.Set;
 
 import pl.piomin.samples.springboot.kubernetes.domain.Gender;
 import pl.piomin.samples.springboot.kubernetes.domain.Person;
+import pl.piomin.samples.springboot.kubernetes.domain.PersonV2;
 import pl.piomin.samples.springboot.kubernetes.repository.PersonRepository;
 import pl.piomin.samples.springboot.kubernetes.service.PersonService;
 
@@ -68,6 +69,17 @@ public class PersonController {
 	@GetMapping("/{id}")
 	public Optional<Person> findById(@PathVariable("id") String id) {
 		return repository.findById(id);
+	}
+
+	@GetMapping("/v2/{id}")
+	public PersonV2 findByIdV2(@PathVariable("id") String id) {
+		Person p = repository.findById(id).orElseThrow();
+		PersonV2 personV2 = new PersonV2();
+		personV2.setAge(p.getAge());
+		personV2.setGender(p.getGender());
+		personV2.setName(p.getFirstName() + " " + p.getLastName());
+		personV2.setId(p.getId());
+		return personV2;
 	}
 
 	@GetMapping("/first-name/{firstName}/last-name/{lastName}")
