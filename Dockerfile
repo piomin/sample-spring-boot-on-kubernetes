@@ -12,5 +12,5 @@ RUN mvn clean package -Dmaven.test.skip=true
 FROM openjdk:11-buster
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/target/dependency
-COPY --from=build /workspace/app/target/sample-spring-boot-on-kubernetes-1.2-SNAPSHOT.jar app.jar
+COPY --from=build /workspace/app/target/sample-spring-boot-on-kubernetes-1.3-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar", "app.jar"]
