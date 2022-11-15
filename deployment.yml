@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jenkins-prod
+  namespace: jenkins
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jenkins-prod
+  template:
+    metadata:
+      labels:
+        app: jenkins-prod
+    spec:
+      containers:
+        - name: jenkins-prod
+          image: saaspeprivatehub.azurecr.io/jenkins:$(Build.BuildId)
+          ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jenkins-prod-svc
+  namespace: jenkins
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+  selector:
+    app: jenkins-prod
+---
+# kind: ConfigMap
+# apiVersion: v1
+# metadata:
+#   name: saaspe-backend-config
+#   namespace: {#namespace#}
+#   labels:
+#     app: saaspe-backend
+# # data:
+# #   REACT_APP_IMAGE_KEY: "sp=r&st=2022-06-22T02:09:06Z&se=2023-06-22T10:09:06Z&spr=https&sv=2021-06-08&sr=c&sig=uf31uZgU4EGvfs5eknQOitoRdOgkVWusVGGna0D8aAA%3D"
+# #   REACT_APP_API_URL: "http://20.212.45.80:8081"
+# #   REACT_APP_API_BASE: "api"
+---
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: saaspe-api-ingress
+#   namespace: dev
+#   annotations:
+#     kubernetes.io/ingress.class: azure/application-gateway
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   tls:
+#     - hosts:
+#         - {#host#}
+#   rules:
+#     - host: {#host#}
+#       http:
+#         paths: 
+#           - path: /
+#             backend:
+#               service:
+#                 name: saaspe-api-svc
+#                 port:
+#                   number: 80
+#             pathType: Prefix
