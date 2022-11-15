@@ -1,57 +1,39 @@
-pipeline {
-	agent {
-		label "default"
-	}
-	stages {
-		stage('Checkout') {
-			steps {
-				script {
-					git url: 'https://github.com/piomin/sample-spring-boot-on-kubernetes.git', credentialsId: 'github_credentials'
-					sh 'ls -la'
-				}
-			}
-		}
-		stage('Build') {
-			agent {
-				label "maven"
-			}
-			steps {
-				sh 'ls -la'
-				sh 'mvn -version'
-				sh 'mvn clean compile'
-			}
-		}
-		stage('Test') {
-			agent {
-				label "maven"
-			}
-			steps {
-				sh 'mvn test'
-			}
-		}
-		stage('Image') {
-			agent {
-				label "maven"
-			}
-			steps {
-				sh 'mvn -P jib -Djib.to.auth.username=piomin -Djib.to.auth.password=Piot_123 compile jib:build'
-			}
-		}
-		stage('Deploy on test') {
-			steps {
-				script {
-					env.PIPELINE_NAMESPACE = "test"
-					kubernetesDeploy kubeconfigId: 'docker-desktop', configs: 'k8s/deployment-template.yaml'
-				}
-			}
-		}
-		stage('Deploy on prod') {
-			steps {
-				script {
-					env.PIPELINE_NAMESPACE = "prod"
-					kubernetesDeploy kubeconfigId: 'docker-desktop', configs: 'k8s/deployment-template.yaml'
-				}
-			}
-		}
-	}
-}
+pipeline{
+    agent any
+    environment {
+        imagename = "saaspeprivatehub.azurecr.io/jenkins"
+        registryCredential = 'Acr_Id'
+        dockerImage = ''
+        registryUrl = 'saaspeprivatehub.azurecr.io'
+        
+    }
+    stages{
+        stage('git fetch'){
+            steps{
+                git 'https://github.com/vinaykumar15061992/Jenkins-with-Github-Actions.git'
+            }
+        }
+        stage('Building image') {
+            steps{
+                script {
+                    dockerImage = docker.build imagename
+                }
+            }
+        }
+        stage('Deploy Image') {
+            steps{
+                script {
+                    docker.withRegistry( "http://${registryUrl}", registryCredential )  {
+                    dockerImage.push("$BUILD_NUMBER")
+                    dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+        stage('deploying app to kubernetes'){
+            steps{
+                sh 'kubectl apply -f deployment.yml'
+            }
+        }
+    }
+} 
