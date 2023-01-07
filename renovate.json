@@ -8,5 +8,6 @@
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
     }
-  ]
+  ],
+  "prCreation": "not-pending"
 }
