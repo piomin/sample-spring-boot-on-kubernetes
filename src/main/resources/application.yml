@@ -9,7 +9,6 @@ spring:
       password: ${MONGO_PASSWORD}
       database: ${MONGO_DATABASE}
       authentication-database: admin
-
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
