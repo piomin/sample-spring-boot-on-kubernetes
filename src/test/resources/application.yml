@@ -6,7 +6,7 @@ spring:
       uri: mongodb://localhost:27071/test
   mongodb:
     embedded:
-      version: 4.0.2
+      version: 5.0.0
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
