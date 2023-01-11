@@ -17,6 +17,10 @@ public class PersonControllerTest {
 
 	private static String id;
 
+	static {
+		System.setProperty("spring.mongodb.embedded.version","5.0.0");
+	}
+
 	@LocalServerPort
 	int port;
 	@Autowired
