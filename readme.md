@@ -1,11 +1,11 @@
 # Spring Boot on Kubernetes Demo Project [![Twitter](https://img.shields.io/twitter/follow/piotr_minkowski.svg?style=social&logo=twitter&label=Follow%20Me)](https://twitter.com/piotr_minkowski)
 
-[![CircleCI](https://circleci.com/gh/piomin/sample-spring-on-kubernetes.svg?style=svg)](https://circleci.com/gh/piomin/sample-spring-on-kubernetes)
+[![CircleCI](https://circleci.com/gh/piomin/sample-spring-boot-on-kubernetes.svg?style=svg)](https://circleci.com/gh/piomin/sample-spring-boot-on-kubernetes)
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-on-kubernetes)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-spring-on-kubernetes&metric=bugs)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-on-kubernetes)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-spring-on-kubernetes&metric=coverage)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-on-kubernetes)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-spring-on-kubernetes&metric=ncloc)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-on-kubernetes)
+[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-black.svg)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-boot-on-kubernetes)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-spring-boot-on-kubernetes&metric=bugs)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-boot-on-kubernetes)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-spring-boot-on-kubernetes&metric=coverage)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-boot-on-kubernetes)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=piomin_sample-spring-boot-on-kubernetes&metric=ncloc)](https://sonarcloud.io/dashboard?id=piomin_sample-spring-boot-on-kubernetes)
 
 In this project I'm demonstrating different mechanisms of deploying application on Kubernetes. The example application application is simple Spring Boot app that exposes some HTTP endpoints for CRUD operations and connects to MongoDB on cluster.
 
