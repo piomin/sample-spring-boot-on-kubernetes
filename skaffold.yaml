@@ -8,6 +8,7 @@ build:
     jib:
       args:
       - -Pjib
+      - -DskipTests
 deploy:
   kubectl:
     manifests:
@@ -19,3 +20,22 @@ profiles:
     kubectl:
       manifests:
       - k8s/knative-service.yaml
+- name: buildpacks
+  build:
+    artifacts:
+      - image: piomin/sample-spring-boot-on-kubernetes
+        buildpacks:
+          builder: paketobuildpacks/builder:base
+#          builder: gcr.io/buildpacks/builder:v1
+#          builder: heroku/buildpacks:20
+          buildpacks:
+#            - paketo-buildpacks/eclipse-openj9
+#            - paketo-buildpacks/amazon-corretto
+#            - paketo-buildpacks/oracle
+            - paketo-buildpacks/adoptium
+            - paketo-buildpacks/java
+          env:
+            - BP_JVM_VERSION=17
+#            - GOOGLE_RUNTIME_VERSION=17
+
+
