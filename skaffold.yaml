@@ -33,9 +33,15 @@ profiles:
 #            - paketo-buildpacks/amazon-corretto
 #            - paketo-buildpacks/oracle
             - paketo-buildpacks/adoptium
+#            - paketo-buildpacks/azul-zulu
+#            - paketo-buildpacks/alibaba-dragonwell
+#            - paketo-buildpacks/microsoft-openjdk
             - paketo-buildpacks/java
           env:
             - BP_JVM_VERSION=17
 #            - GOOGLE_RUNTIME_VERSION=17
+#    tagPolicy:
+#      envTemplate:
+#        template: "{{.VENDOR}}"
 
 
