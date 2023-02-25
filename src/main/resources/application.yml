@@ -9,9 +9,9 @@ spring:
       password: ${MONGO_PASSWORD}
       database: ${MONGO_DATABASE}
       authentication-database: admin
-logging:
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+#logging:
+#  pattern:
+#    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
 
 management:
   endpoints:
@@ -30,3 +30,6 @@ management:
     port: 8081
 
 #management.endpoint.health.group.live.additional-path="server:/healthz"
+
+spring.output.ansi.enabled: ALWAYS
+#logging.pattern.console: "%clr(%d{HH:mm:ss.SSS}){blue} %clr(%5p) %clr(---){cyan} %clr([%15.15t]){yellow} %clr(:){red} %clr(%m){magenta}%n"
