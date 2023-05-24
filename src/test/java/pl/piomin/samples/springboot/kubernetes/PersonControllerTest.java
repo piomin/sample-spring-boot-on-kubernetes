@@ -30,8 +30,8 @@ public class PersonControllerTest {
 
 	@DynamicPropertySource
 	static void registerMongoProperties(DynamicPropertyRegistry registry) {
-		String uri = mongodb.getConnectionString() + "/test";
-		registry.add("spring.data.mongodb.uri", () -> uri);
+//		String uri = mongodb.getConnectionString() + "/test";
+		registry.add("spring.data.mongodb.uri", mongodb::getConnectionString);
 	}
 
 	@Autowired
