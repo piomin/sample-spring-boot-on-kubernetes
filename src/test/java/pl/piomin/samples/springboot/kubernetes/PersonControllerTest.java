@@ -22,45 +22,45 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PersonControllerTest {
 
-	private static String id;
+    private static String id;
 
-	@Container
-	@ServiceConnection
-	static MongoDBContainer mongodb = new MongoDBContainer("mongo:5.0");
+    @Container
+    @ServiceConnection
+    static MongoDBContainer mongodb = new MongoDBContainer("mongo:5.0");
 
 //	@DynamicPropertySource
 //	static void registerMongoProperties(DynamicPropertyRegistry registry) {
 //		registry.add("spring.data.mongodb.uri", mongodb::getReplicaSetUrl);
 //	}
 
-	@Autowired
-	TestRestTemplate restTemplate;
+    @Autowired
+    TestRestTemplate restTemplate;
 
-	@Test
-	@Order(1)
-	void add() {
-		Person person = new Person(null, "Test", "Test", 100, Gender.FEMALE);
-		Person personAdded = restTemplate.postForObject("/persons", person, Person.class);
-		assertNotNull(personAdded);
-		assertNotNull(personAdded.getId());
-		assertEquals(person.getLastName(), personAdded.getLastName());
-		id = personAdded.getId();
-	}
+    @Test
+    @Order(1)
+    void add() {
+        Person person = new Person(null, "Test", "Test", 100, Gender.FEMALE);
+        Person personAdded = restTemplate.postForObject("/persons", person, Person.class);
+        assertNotNull(personAdded);
+        assertNotNull(personAdded.getId());
+        assertEquals(person.getLastName(), personAdded.getLastName());
+        id = personAdded.getId();
+    }
 
-	@Test
-	@Order(2)
-	void findById() {
-		Person person = restTemplate.getForObject("/persons/{id}", Person.class, id);
-		assertNotNull(person);
-		assertNotNull(person.getId());
-		assertEquals(id, person.getId());
-	}
+    @Test
+    @Order(2)
+    void findById() {
+        Person person = restTemplate.getForObject("/persons/{id}", Person.class, id);
+        assertNotNull(person);
+        assertNotNull(person.getId());
+        assertEquals(id, person.getId());
+    }
 
-	@Test
-	@Order(2)
-	void findAll() {
-		Person[] persons = restTemplate.getForObject("/persons", Person[].class);
-		assertEquals(6, persons.length);
-	}
+    @Test
+    @Order(2)
+    void findAll() {
+        Person[] persons = restTemplate.getForObject("/persons", Person[].class);
+        assertEquals(6, persons.length);
+    }
 
 }
