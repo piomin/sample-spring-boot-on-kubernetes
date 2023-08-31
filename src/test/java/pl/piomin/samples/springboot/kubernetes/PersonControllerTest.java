@@ -28,11 +28,6 @@ public class PersonControllerTest {
     @ServiceConnection
     static MongoDBContainer mongodb = new MongoDBContainer("mongo:5.0");
 
-//	@DynamicPropertySource
-//	static void registerMongoProperties(DynamicPropertyRegistry registry) {
-//		registry.add("spring.data.mongodb.uri", mongodb::getReplicaSetUrl);
-//	}
-
     @Autowired
     TestRestTemplate restTemplate;
 
