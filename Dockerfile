@@ -9,7 +9,7 @@ COPY . .
 RUN mvn clean package -Dmaven.test.skip=true
 
 
-FROM openjdk:17.0.2-buster
+FROM openjdk:21-buster
 VOLUME /tmp
 ARG DEPENDENCY=/workspace/app/target/dependency
 COPY --from=build /workspace/app/target/sample-spring-boot-on-kubernetes-1.3-SNAPSHOT.jar app.jar
