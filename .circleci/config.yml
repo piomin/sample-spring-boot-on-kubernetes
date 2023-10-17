@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: 'cimg/openjdk:20.0'
+      - image: 'cimg/openjdk:21.0'
     steps:
       - checkout
       - run:
