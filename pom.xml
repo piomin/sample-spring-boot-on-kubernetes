@@ -141,11 +141,15 @@
                         <groupId>com.google.cloud.tools</groupId>
                         <artifactId>jib-maven-plugin</artifactId>
                         <version>3.4.0</version>
-                        <!--						<configuration>-->
-                        <!--							<to>piomin/sample-spring-boot-on-kubernetes</to>-->
-                        <!--							<allowInsecureRegistries>true</allowInsecureRegistries>-->
-                        <!--							<to>172.17.0.2:5000/root/sample-spring-boot-on-kubernetes</to>-->
-                        <!--						</configuration>-->
+                        <configuration>
+                            <from>
+                                <image>eclipse-temurin:21-jdk-ubi9-minimal</image>
+<!--                                <configuration>-->
+<!--                                <to>piomin/sample-spring-boot-on-kubernetes</to>-->
+<!--                                <allowInsecureRegistries>true</allowInsecureRegistries>-->
+<!--                                <to>172.17.0.2:5000/root/sample-spring-boot-on-kubernetes</to>-->
+                            </from>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>

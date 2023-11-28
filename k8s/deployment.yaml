@@ -56,8 +56,9 @@ kind: Service
 metadata:
   name: sample-spring-boot-on-kubernetes-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: sample-spring-boot-on-kubernetes
   ports:
   - port: 8080
+    nodePort: 30000

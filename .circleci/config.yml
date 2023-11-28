@@ -25,6 +25,63 @@ jobs:
       - run:
           name: Maven Tests
           command: mvn test
+  deploy-k8s:
+    executor: machine_executor_amd64
+    steps:
+      - checkout
+      - run:
+          name: Install Kubectl
+          command: |
+            curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+            chmod +x kubectl
+            sudo mv ./kubectl /usr/local/bin/kubectl
+      - run:
+          name: Install Skaffold
+          command: |
+            curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+            chmod +x skaffold
+            sudo mv skaffold /usr/local/bin
+      - run:
+          name: Install Kind
+          command: |
+            [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+            chmod +x ./kind
+            sudo mv ./kind /usr/local/bin/kind
+      - run:
+          name: Install Grafana K6
+          command: |
+            sudo gpg -k
+            sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
+            echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+            sudo apt-get update
+            sudo apt-get install k6
+      - run:
+          name: Install OpenJDK 21
+          command: |
+            java -version
+            sudo apt-get update && sudo apt-get install openjdk-21-jdk
+            sudo update-alternatives --set java /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+            sudo update-alternatives --set javac /usr/lib/jvm/java-21-openjdk-amd64/bin/javac
+            java -version
+            export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+      - run:
+          name: Create Kind Cluster
+          command: |
+            kind create cluster --name c1 --config k8s/kind-cluster-test.yaml
+      - run:
+          name: Deploy to K8s
+          command: |
+            export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+            skaffold run
+      - run:
+          name: Run K6 Test
+          command: |
+            kubectl get svc
+            k6 run src/test/resources/k6/load-tests-add.js -e PERSONS_URI=http://localhost:30000
+      - run:
+          name: Delete Kind Cluster
+          command: |
+            kind delete cluster --name c1
 
 executors:
   machine_executor_amd64:
@@ -40,3 +97,6 @@ workflows:
       - test
       - build:
           context: SonarCloud
+      - deploy-k8s:
+          requires:
+            - test
