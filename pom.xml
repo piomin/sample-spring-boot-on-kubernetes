@@ -39,10 +39,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -102,6 +99,7 @@
                 </executions>
                 <configuration>
                     <excludeDevtools>false</excludeDevtools>
+                    <imageName>piomin/sample-spring-boot-on-kubernetes:${project.version}</imageName>
                     <!--					<image>-->
                     <!--						<builder>gcr.io/buildpacks/builder:v1</builder>-->
                     <!--					</image>-->
