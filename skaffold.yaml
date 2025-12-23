@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta22
+apiVersion: skaffold/v4beta13
 kind: Config
 metadata:
   name: sample-spring-boot-on-kubernetes
@@ -9,16 +9,18 @@ build:
       args:
       - -Pjib
       - -DskipTests
+manifests:
+  rawYaml:
+    - k8s/mongodb-deployment.yaml
+    - k8s/deployment.yaml
 deploy:
-  kubectl:
-    manifests:
-      - k8s/mongodb-deployment.yaml
-      - k8s/deployment.yaml
+  kubectl: {}
 profiles:
 - name: knative
   deploy:
-    kubectl:
-      manifests:
+    kubectl: {}
+  manifests:
+    rawYaml:
       - k8s/knative-service.yaml
 - name: buildpacks
   build:
