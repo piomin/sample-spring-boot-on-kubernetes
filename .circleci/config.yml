@@ -8,7 +8,7 @@ jobs:
       - checkout
       - run:
           name: Analyze on SonarCloud
-          command: mvn verify sonar:sonar -DskipTests
+          command: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -DskipTests
   test:
     executor: machine_executor_amd64
     steps:
@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Install Kind
           command: |
-            [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+            [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-amd64
             chmod +x ./kind
             sudo mv ./kind /usr/local/bin/kind
       - run:
