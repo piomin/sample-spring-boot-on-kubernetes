@@ -1,14 +1,13 @@
 spring:
   application:
     name: sample-spring-boot-on-kubernetes
-  data:
-    mongodb:
-      host: ${MONGO_URL}
-      port: 27017
-      username: ${MONGO_USERNAME}
-      password: ${MONGO_PASSWORD}
-      database: ${MONGO_DATABASE}
-      authentication-database: admin
+  mongodb:
+    host: ${MONGO_URL}
+    port: 27017
+    username: ${MONGO_USERNAME}
+    password: ${MONGO_PASSWORD}
+    database: ${MONGO_DATABASE}
+    authentication-database: admin
 #logging:
 #  pattern:
 #    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
