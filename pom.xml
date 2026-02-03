@@ -7,15 +7,15 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.5.10</version>
+        <version>4.0.2</version>
     </parent>
 
     <groupId>pl.piomin.samples</groupId>
     <artifactId>sample-spring-boot-on-kubernetes</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.4-SNAPSHOT</version>
 
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <sonar.projectKey>piomin_sample-spring-boot-on-kubernetes</sonar.projectKey>
         <sonar.organization>piomin</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
@@ -69,6 +69,11 @@
             <groupId>org.instancio</groupId>
             <artifactId>instancio-junit</artifactId>
             <version>5.5.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-resttestclient</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -143,15 +148,11 @@
                         <groupId>com.google.cloud.tools</groupId>
                         <artifactId>jib-maven-plugin</artifactId>
                         <version>3.5.1</version>
-<!--                        <configuration>-->
-<!--                            <from>-->
-<!--                                <image>eclipse-temurin:21-jdk-ubi9-minimal</image>-->
-<!--                                <configuration>-->
-<!--                                <to>piomin/sample-spring-boot-on-kubernetes</to>-->
-<!--                                <allowInsecureRegistries>true</allowInsecureRegistries>-->
-<!--                                <to>172.17.0.2:5000/root/sample-spring-boot-on-kubernetes</to>-->
-<!--                            </from>-->
-<!--                        </configuration>-->
+                        <configuration>
+                            <from>
+                                <image>eclipse-temurin:25-jdk-ubi10-minimal</image>
+                            </from>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
